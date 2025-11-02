@@ -16,11 +16,11 @@
                         @csrf
                         <div class="mb-3">
                             <label for="prompt" class="form-label fw-semibold">Описание изображения:</label>
-                            <textarea 
-                                class="form-control" 
-                                id="prompt" 
-                                name="prompt" 
-                                rows="4" 
+                            <textarea
+                                class="form-control"
+                                id="prompt"
+                                name="prompt"
+                                rows="4"
                                 placeholder="Опишите детально что вы хотите увидеть..."
                                 required
                                 maxlength="1000"
@@ -53,8 +53,8 @@
 							@foreach($images as $image)
 								<div class="col-md-6 mb-3">
 									<div class="card h-100">
-										<img src="{{ Storage::url($image->image_path) }}" 
-											class="card-img-top" 
+										<img src="{{ Storage::url($image->image_path) }}"
+											class="card-img-top"
 											alt="{{ $image->prompt }}"
 											style="height: 200px; object-fit: cover;">
 										<div class="card-body">
@@ -80,20 +80,21 @@
 </div>
 
 <script>
+// Скрипты в файле с версткой?
 document.getElementById('aiImageForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
     const form = e.target;
     const formData = new FormData(form);
     const loading = document.getElementById('loading');
     const generateBtn = document.getElementById('generateBtn');
     const resultAlert = document.getElementById('resultAlert');
-    
+
     // Блокируем кнопку и показываем загрузку
     generateBtn.disabled = true;
     loading.style.display = 'block';
     resultAlert.style.display = 'none';
-    
+
     fetch('{{ route("ai-images.generate") }}', {
         method: 'POST',
         body: formData,
@@ -106,13 +107,13 @@ document.getElementById('aiImageForm').addEventListener('submit', function(e) {
     .then(data => {
         loading.style.display = 'none';
         generateBtn.disabled = false;
-        
+
         if (data.success) {
             resultAlert.className = 'alert alert-success';
             resultAlert.innerHTML = 'Изображение успешно сгенерировано! Страница будет перезагружена...';
             resultAlert.style.display = 'block';
             form.reset();
-            
+
             // Перезагружаем страницу через 2 секунды чтобы показать новое изображение в истории
             setTimeout(() => {
                 window.location.reload();
